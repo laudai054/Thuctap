@@ -1,8 +1,6 @@
 package Controller;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bo.Loaibo;
+import bean.khachhangbean;
+import bo.khachhangbo;
 
 /**
- * Servlet implementation class AdminXoaLoaiGiay
+ * Servlet implementation class KiemTraDN
  */
-@WebServlet("/AdminXoaLoaiGiay")
-public class AdminXoaLoaiGiay extends HttpServlet {
+@WebServlet("/KiemTraDN")
+public class KiemTraDN extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminXoaLoaiGiay() {
+    public KiemTraDN() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,23 +31,26 @@ public class AdminXoaLoaiGiay extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("utf-8");
-	    request.setCharacterEncoding("utf-8");
-	    HttpSession session = request.getSession(true);
-	    
-		String maloai=(String)request.getParameter("xlg");                      //Lấy arraylist gh
-		Loaibo sbo = new Loaibo();
+		request.setCharacterEncoding("utf-8");
+		HttpSession session = request.getSession(true);
+		khachhangbo khbo=new khachhangbo();
+		String un=request.getParameter("txtun");
+		String pass=request.getParameter("txtpass");
+		khachhangbean kh = null;
 		try {
-			sbo.xoaloai(maloai);
+			kh = khbo.ktdn(un, pass);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		response.setContentType("text/html"); //set response cho session
-		session.setAttribute("xoa", true);
-		
-	    RequestDispatcher rd= request.getRequestDispatcher("AdminQLLoaiGiay"); //set response cho request
-	    rd.forward(request, response);
-	
+		if(kh!=null){
+			session.setAttribute("dn", kh);	//set dn = kh
+			session.setAttribute("kt", (long)1);	//set kt = 1
+			response.sendRedirect("HTGiay");	
+		}else{
+			response.sendRedirect("HTGiay");
+			session.setAttribute("kt", (long)0);	//set kt = 0
+		}
 	}
 
 	/**

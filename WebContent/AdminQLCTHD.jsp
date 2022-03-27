@@ -26,6 +26,10 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 <style>
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
@@ -109,7 +113,7 @@ footer {
 			<!-- -------body------- -->
 			<div class="col-sm-10 text-left">
 
-				<table class="table table-bordered">
+				<table class="table table-bordered" id="myTable">
 					<colgroup>
 						<col width="70" span="1">
 						<col width="70" span="2">
@@ -206,5 +210,10 @@ footer {
        ${sessionScope.adxoals=false}
     </c:when>
 	</c:choose>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#myTable').DataTable();
+		});
+	</script>
 </body>
 </html>

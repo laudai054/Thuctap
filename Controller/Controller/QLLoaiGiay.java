@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,19 +11,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.Adminbean;
+import bean.Loaibean;
+import bean.Giaybean;
+import bo.Adminbo;
 import bo.Loaibo;
+import bo.Giaybo;
 
 /**
- * Servlet implementation class AdminXoaLoaiGiay
+ * Servlet implementation class QLLoaiGiay
  */
-@WebServlet("/AdminXoaLoaiGiay")
-public class AdminXoaLoaiGiay extends HttpServlet {
+@WebServlet("/QLLoaiGiay")
+public class QLLoaiGiay extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminXoaLoaiGiay() {
+    public QLLoaiGiay() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,24 +37,31 @@ public class AdminXoaLoaiGiay extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("utf-8");
-	    request.setCharacterEncoding("utf-8");
-	    HttpSession session = request.getSession(true);
-	    
-		String maloai=(String)request.getParameter("xlg");                      //Lấy arraylist gh
-		Loaibo sbo = new Loaibo();
 		try {
-			sbo.xoaloai(maloai);
+			response.setCharacterEncoding("utf-8");
+			request.setCharacterEncoding("utf-8");
+			HttpSession session = request.getSession(true);
+			Loaibo lbo= new Loaibo();
+			Giaybo sbo= new Giaybo();
+			String ml= request.getParameter("ml");
+			String key= request.getParameter("key");
+			ArrayList<Loaibean> dsloai=lbo.getloai();
+			ArrayList<Giaybean> dssach= sbo.getsach();
+			//
+			
+			//
+			if(ml!=null) dssach= sbo.TimLoai(dssach, ml);
+			else
+				if(key!=null) dssach=sbo.Tim(dssach, key);
+			
+     		session.setAttribute("dsloaiad", dsloai);
+     		session.setAttribute("dssachad", dssach);   		
+    		response.setContentType("text/html");
+		    RequestDispatcher rd= request.getRequestDispatcher("QLLoaiGiay.jsp");
+		    rd.forward(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		response.setContentType("text/html"); //set response cho session
-		session.setAttribute("xoa", true);
-		
-	    RequestDispatcher rd= request.getRequestDispatcher("AdminQLLoaiGiay"); //set response cho request
-	    rd.forward(request, response);
-	
 	}
 
 	/**

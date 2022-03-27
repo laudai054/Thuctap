@@ -29,6 +29,7 @@ public class Loaidao {
 	}
 	
 	public boolean XoaLoai(String maloai) throws Exception{
+		ArrayList<Loaibean> ds = new ArrayList<Loaibean>();
 		//b1: ket noi
     	DungChung dc= new DungChung();
     	dc.KetNoi();
@@ -36,9 +37,10 @@ public class Loaidao {
     	String sql="DELETE  FROM loai"
     			+ "  WHERE maloai='"+maloai+"';";
     	PreparedStatement cmd= dc.cn.prepareStatement(sql);
-    	cmd.executeUpdate();
+    	ResultSet rs = cmd.executeQuery();
     	//b3: Duyet qua cac du lieu lay ve de luu vao 1 mang
     	//Dong ket noi
+    	rs.close();
     	dc.cn.close();
     	System.out.println("maloai"+ maloai);
 		return true;

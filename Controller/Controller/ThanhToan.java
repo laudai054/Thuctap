@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bo.Loaibo;
+import bean.khachhangbean;
 
 /**
- * Servlet implementation class AdminXoaLoaiGiay
+ * Servlet implementation class ThanhToan
  */
-@WebServlet("/AdminXoaLoaiGiay")
-public class AdminXoaLoaiGiay extends HttpServlet {
+@WebServlet("/ThanhToan")
+public class ThanhToan extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminXoaLoaiGiay() {
+    public ThanhToan() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,23 +32,15 @@ public class AdminXoaLoaiGiay extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("utf-8");
-	    request.setCharacterEncoding("utf-8");
-	    HttpSession session = request.getSession(true);
-	    
-		String maloai=(String)request.getParameter("xlg");                      //Lấy arraylist gh
-		Loaibo sbo = new Loaibo();
-		try {
-			sbo.xoaloai(maloai);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		request.setCharacterEncoding("utf-8");
+		HttpSession session = request.getSession(true);  
+		khachhangbean khxn=(khachhangbean)session.getAttribute("dn");
+		if(khxn==null) {
+			session.setAttribute("khxn",(int)1);
+			RequestDispatcher rd= request.getRequestDispatcher("HTGiay");
+		    rd.forward(request, response);
 		}
-		response.setContentType("text/html"); //set response cho session
-		session.setAttribute("xoa", true);
-		
-	    RequestDispatcher rd= request.getRequestDispatcher("AdminQLLoaiGiay"); //set response cho request
-	    rd.forward(request, response);
-	
+	    
 	}
 
 	/**
